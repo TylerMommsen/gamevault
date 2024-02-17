@@ -37,7 +37,8 @@
 		--radius: 0.5rem;
 
 		--text-normal: rgb(255, 255, 255);
-		--text-secondary: rgb(207, 207, 207);
+		--text-secondary: rgba(255, 255, 255, 0.45);
+		--text-dark: rgb(38, 38, 38);
 	}
 
 	/* .dark {

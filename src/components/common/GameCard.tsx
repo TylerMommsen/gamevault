@@ -1,15 +1,15 @@
 import React from 'react';
 import Image from 'next/image';
+import GamePlatforms from '@/components/common/GamePlatforms';
 
 interface GameCardProps {
 	id: number;
 	image: string;
 	name: string;
 	parentPlatforms: ParentPlatform[];
-	price: number;
 }
 
-export default function GameCard({ id, image, name, parentPlatforms, price }: GameCardProps) {
+export default function GameCard({ id, image, name, parentPlatforms }: GameCardProps) {
 	return (
 		<div id="game-card" className="flex flex-col rounded-2xl bg-secondary text-primary">
 			<div className="w-full relative">
@@ -26,46 +26,7 @@ export default function GameCard({ id, image, name, parentPlatforms, price }: Ga
 
 			<div className="flex flex-col gap-2 p-4">
 				<div className="flex gap-4 text-textSecondary">
-					{parentPlatforms.map((platform) => (
-						<React.Fragment key={platform.platform.id}>
-							{platform.platform.name === 'PlayStation' && (
-								<Image
-									src={'/playstation-icon.svg'}
-									width={16}
-									height={16}
-									alt="playstation platform icon"
-								/>
-							)}
-							{platform.platform.name === 'PC' && (
-								<Image src={'/pc-icon.svg'} width={16} height={16} alt="pc platform icon" />
-							)}
-							{platform.platform.name === 'Xbox' && (
-								<Image src={'/xbox-icon.svg'} width={16} height={16} alt="xbox platform icon" />
-							)}
-							{platform.platform.name === 'Nintendo' && (
-								<Image
-									src={'/nintendo-icon.svg'}
-									width={16}
-									height={16}
-									alt="nintendo platform icon"
-								/>
-							)}
-							{platform.platform.name === 'Apple Macintosh' && (
-								<Image src={'/apple-icon.svg'} width={16} height={16} alt="apple platform icon" />
-							)}
-							{platform.platform.name === 'Android' && (
-								<Image
-									src={'/android-icon.svg'}
-									width={16}
-									height={16}
-									alt="android platform icon"
-								/>
-							)}
-							{platform.platform.name === 'Linux' && (
-								<Image src={'/linux-icon.svg'} width={16} height={16} alt="linux platform icon" />
-							)}
-						</React.Fragment>
-					))}
+					<GamePlatforms parentPlatforms={parentPlatforms} />
 				</div>
 
 				<h3 className="text-2xl font-bold">{name}</h3>

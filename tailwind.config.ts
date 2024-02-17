@@ -21,6 +21,7 @@ const config = {
 			colors: {
 				textNormal: 'var(--text-normal)',
 				textSecondary: 'var(--text-secondary)',
+				textDark: 'var(--text-dark)',
 				border: 'var(--border)',
 				input: 'var(--input)',
 				ring: 'var(--ring)',

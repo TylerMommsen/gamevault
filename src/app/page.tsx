@@ -4,6 +4,7 @@ import Image from 'next/image';
 import ResourceLoader from '@/lib/ResourceLoader';
 import { useEffect, useState } from 'react';
 import GameCard from '@/components/common/GameCard';
+import Link from 'next/link';
 
 export default function Home() {
 	const [games, setGames] = useState<GameList>();
@@ -23,31 +24,27 @@ export default function Home() {
 		fetchData();
 	}, []);
 
-	const generatePrice = () => {
-		const prices = [9.99, 19.99, 29.99, 49.99, 69.99];
-		const randomIndex = Math.floor(Math.random() * prices.length);
-		return prices[randomIndex];
-	};
-
 	const pageContent = (
 		<>
 			{games?.results.map((game: GameResultsData, index) => {
+				const gameSlug = encodeURIComponent(game.slug);
 				return (
-					<GameCard
-						key={game.id}
-						id={game.id}
-						image={game.background_image}
-						name={game.name}
-						parentPlatforms={game.parent_platforms}
-						price={19.99}
-					/>
+					<Link href={`/games/${gameSlug}`} key={game.id} passHref>
+						<GameCard
+							key={game.id}
+							id={game.id}
+							image={game.background_image}
+							name={game.name}
+							parentPlatforms={game.parent_platforms}
+						/>
+					</Link>
 				);
 			})}
 		</>
 	);
 
 	return (
-		<main className="bg-background text-textNormal min-h-screen">
+		<main className="bg-background text-textNormal min-h-screen pt-16">
 			<div className="flex flex-col gap-4 max-w-7xl p-4">
 				<div className="flex flex-col justify-center items-center mb-4">
 					<h1 className="font-bold text-4xl">Top Picks</h1>
