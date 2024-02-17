@@ -24,7 +24,7 @@ const config = {
 				textDark: 'var(--text-dark)',
 				border: 'var(--border)',
 				input: 'var(--input)',
-				ring: 'var(--ring)',
+				ring: 'var(--primary)',
 				background: 'var(--background)',
 				foreground: 'var(--foreground)',
 				primary: {
