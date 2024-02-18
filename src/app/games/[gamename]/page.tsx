@@ -24,12 +24,10 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
 			if (!gameSlug) return;
 
 			try {
-				const data = await ResourceLoader(`https://api.rawg.io/api/games/${gameSlug}`);
+				const data = await ResourceLoader(`https://api.rawg.io/api/games/${gameSlug}?`);
 				const screenshots = await ResourceLoader(
-					`https://api.rawg.io/api/games/${gameSlug}/screenshots`
+					`https://api.rawg.io/api/games/${gameSlug}/screenshots?`
 				);
-				console.log(data);
-				console.log(screenshots);
 				setGameData(data);
 				setGameScreenshots(screenshots);
 			} catch (error) {

@@ -14,19 +14,32 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 
-export default function Home() {
+export default function GenreGames({ params }: { params: { genre: string } }) {
 	const [gameList, setGameList] = useState<GameList>(); // object parent of gameResults
 	const [gameResults, setGameResults] = useState<GameResultsData[]>([]); // contains array of game results
 	const [sortOption, setSortOption] = useState<string>('');
 	const [platform, setPlatform] = useState<string>('');
 
+	const genreSlug = params.genre;
+
+	const formatGenreSlug = () => {
+		let genre = genreSlug;
+
+		if (genre === 'role-playing-games-rpg') return 'RPG';
+
+		const withSpaces = genre.replace(/-/g, ' ');
+		const capitalized = withSpaces
+			.split(' ')
+			.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+			.join(' ');
+		return capitalized;
+	};
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const data = await ResourceLoader('https://api.rawg.io/api/games?');
-
+				const data = await ResourceLoader(`https://api.rawg.io/api/games?genres=${genreSlug}&`);
 				setGameList(data);
-				console.log(data);
 				setGameResults(data.results);
 			} catch (error) {
 				console.error('Failed to fetch market data', error);
@@ -34,46 +47,42 @@ export default function Home() {
 		};
 
 		fetchData();
-	}, []);
+	}, [genreSlug]);
 
-	useEffect(() => {
-		const updateGames = () => {
-			let updatedGames = gameList?.results || [];
+	const updateGames = (sort: string, plat: string) => {
+		let updatedGames = gameList?.results || [];
 
-			if (platform) {
-				updatedGames = updatedGames.filter((game) =>
-					game.parent_platforms.some((p) => p.platform.name === platform)
-				);
-			}
+		if (plat || platform) {
+			updatedGames = updatedGames.filter((game) =>
+				game.parent_platforms.some((p) => p.platform.name === plat)
+			);
+		}
 
-			if (sortOption === 'release date') {
-				updatedGames.sort((a, b) => {
-					const dataA = new Date(a.released).getTime();
-					const dateB = new Date(b.released).getTime();
-					return dateB - dataA;
-				});
-			} else if (sortOption === 'name') {
-				updatedGames.sort((a, b) => a.name.localeCompare(b.name));
-			} else if (sortOption === 'popularity') {
-				updatedGames.sort((a, b) => b.added - a.added);
-			} else if (sortOption === 'average rating') {
-				updatedGames.sort((a, b) => b.rating - a.rating);
-			} else if (sortOption === 'relevance') {
-			}
+		if (sort === 'release date') {
+			updatedGames.sort((a, b) => {
+				const dataA = new Date(a.released).getTime();
+				const dateB = new Date(b.released).getTime();
+				return dateB - dataA;
+			});
+		} else if (sort === 'name') {
+			updatedGames.sort((a, b) => a.name.localeCompare(b.name));
+		} else if (sort === 'popularity') {
+			updatedGames.sort((a, b) => b.added - a.added);
+		} else if (sort === 'average rating') {
+			updatedGames.sort((a, b) => b.rating - a.rating);
+		}
 
-			setGameResults(updatedGames);
-		};
-
-		updateGames();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [sortOption, platform]);
+		setGameResults(updatedGames);
+	};
 
 	const handleSortChange = (value: string) => {
 		setSortOption(value);
+		updateGames(value, platform);
 	};
 
 	const handlePlatformChange = (value: string) => {
 		setPlatform(value);
+		updateGames(sortOption, value);
 	};
 
 	const pageContent = (
@@ -99,8 +108,7 @@ export default function Home() {
 		<main className="bg-background text-textNormal min-h-screen pt-16">
 			<div className="flex flex-col gap-4 max-w-7xl p-4">
 				<div className="flex flex-col justify-center items-center mb-4">
-					<h1 className="font-bold text-4xl">Top Picks</h1>
-					<p className="text-textSecondary">Based on your ratings</p>
+					<h1 className="font-bold text-4xl">{formatGenreSlug()}</h1>
 				</div>
 
 				<div className="grid grid-cols-2 gap-2 w-full">
@@ -109,7 +117,6 @@ export default function Home() {
 							<SelectValue placeholder="Sort by" />
 						</SelectTrigger>
 						<SelectContent className="bg-secondary border-none text-textNormal">
-							<SelectItem value="relevance">Relevance</SelectItem>
 							<SelectItem value="release date">Release Date</SelectItem>
 							<SelectItem value="name">Name</SelectItem>
 							<SelectItem value="popularity">Popularity</SelectItem>
