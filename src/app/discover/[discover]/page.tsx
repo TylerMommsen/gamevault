@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import ResourceLoader from '@/lib/ResourceLoader';
+import getFetchUrl from '@/lib/getFetchUrl';
 import { useEffect, useState } from 'react';
 import GameCard from '@/components/common/GameCard';
 import Link from 'next/link';
@@ -14,20 +15,20 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 
-export default function GenreGames({ params }: { params: { genre: string } }) {
+export default function DiscoverGames({ params }: { params: { discover: string } }) {
 	const [gameList, setGameList] = useState<GameList>(); // object parent of gameResults
 	const [gameResults, setGameResults] = useState<GameResultsData[]>([]); // contains array of game results
 	const [sortOption, setSortOption] = useState<string>('');
 	const [platform, setPlatform] = useState<string>('');
 
-	const genreSlug = params.genre;
+	const urlSlug = params.discover;
 
-	const formatGenreSlug = () => {
-		let genre = genreSlug;
+	const formatUrlSlug = () => {
+		let slug = urlSlug;
 
-		if (genre === 'role-playing-games-rpg') return 'RPG';
+		if (slug === 'role-playing-games-rpg') return 'RPG';
 
-		const withSpaces = genre.replace(/-/g, ' ');
+		const withSpaces = slug.replace(/-/g, ' ');
 		const capitalized = withSpaces
 			.split(' ')
 			.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -38,7 +39,7 @@ export default function GenreGames({ params }: { params: { genre: string } }) {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const data = await ResourceLoader(`https://api.rawg.io/api/games?genres=${genreSlug}&`);
+				const data = await ResourceLoader(getFetchUrl(urlSlug));
 				setGameList(data);
 				setGameResults(data.results);
 			} catch (error) {
@@ -47,7 +48,7 @@ export default function GenreGames({ params }: { params: { genre: string } }) {
 		};
 
 		fetchData();
-	}, [genreSlug]);
+	}, [urlSlug]);
 
 	const updateGames = (sort: string, plat: string) => {
 		let updatedGames = gameList?.results || [];
@@ -108,7 +109,7 @@ export default function GenreGames({ params }: { params: { genre: string } }) {
 		<main className="bg-background text-textNormal min-h-screen pt-16">
 			<div className="flex flex-col gap-4 max-w-7xl p-4">
 				<div className="flex flex-col justify-center items-center mb-4">
-					<h1 className="font-bold text-4xl">{formatGenreSlug()}</h1>
+					<h1 className="font-bold text-4xl">{formatUrlSlug()}</h1>
 				</div>
 
 				<div className="grid grid-cols-2 gap-2 w-full">

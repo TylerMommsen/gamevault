@@ -27,9 +27,11 @@ export default function MobileMenu() {
 			<div className="flex flex-col gap-2">
 				<h2 className="font-bold text-2xl">Top</h2>
 				<div className="flex flex-col text-xl gap-2">
-					<Link href="/discover/popular">Popular In 2023</Link>
-					<Link href="/discover/top-this-year">Top Of This Year</Link>
-					<Link href="/discover/overview">Top Of All Time</Link>
+					<Link href={`/discover/popular-in-${new Date().getFullYear()}`}>
+						Popular In {new Date().getFullYear()}
+					</Link>
+					<Link href="/discover/top-of-this-year">Top Of This Year</Link>
+					<Link href="/discover/top-of-all-time">Top Of All Time</Link>
 				</div>
 			</div>
 

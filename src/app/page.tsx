@@ -13,6 +13,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import getFetchUrl from '@/lib/getFetchUrl';
 
 export default function Home() {
 	const [gameList, setGameList] = useState<GameList>(); // object parent of gameResults
@@ -23,10 +24,9 @@ export default function Home() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const data = await ResourceLoader('https://api.rawg.io/api/games?');
+				const data = await ResourceLoader(getFetchUrl(''));
 
 				setGameList(data);
-				console.log(data);
 				setGameResults(data.results);
 			} catch (error) {
 				console.error('Failed to fetch market data', error);
