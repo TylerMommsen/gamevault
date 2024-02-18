@@ -165,7 +165,7 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
 
 						<div className="flex flex-col gap-1">
 							<h3 className="text-textSecondary">Genre</h3>
-							<div className="flex gap-2">
+							<div className="flex flex-wrap gap-2">
 								{gameData.genres.map((genre, index) => {
 									const isLast = index === gameData.genres.length - 1;
 									return (
