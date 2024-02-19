@@ -17,6 +17,12 @@ const config = {
 				'2xl': '1400px',
 			},
 		},
+		screens: {
+			'md': '768px',
+			'lg': '992px',
+			'xl': '1280px',
+			'2xl': '1400px',
+		},
 		extend: {
 			colors: {
 				textNormal: 'var(--text-normal)',

@@ -11,7 +11,10 @@ interface GameCardProps {
 
 export default function GameCard({ id, image, name, parentPlatforms }: GameCardProps) {
 	return (
-		<div id="game-card" className="flex flex-col rounded-2xl bg-secondary text-primary">
+		<div
+			id="game-card"
+			className="flex flex-col rounded-2xl bg-secondary text-primary max-w-[440px] lg:w-auto"
+		>
 			<div className="w-full relative">
 				<Image
 					src={image}

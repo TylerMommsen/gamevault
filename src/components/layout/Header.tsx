@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import MobileMenu from '../common/MobileMenu';
+import MobileMenu from '../common/NavSelections';
 
 export default function Header() {
 	const [isScrolled, setIsScrolled] = useState(false);
@@ -24,9 +24,9 @@ export default function Header() {
 
 	return (
 		<header
-			className={`flex justify-center w-screen fixed z-50 ${isScrolled ? 'bg-background' : null} transition-all duration-300`}
+			className={`flex justify-center w-screen fixed z-[100] ${isScrolled ? 'bg-background' : null} transition-all duration-300`}
 		>
-			<div className="max-w-7xl flex justify-between items-center text-primary p-4 w-full">
+			<div className="max-w-[1920px] flex justify-between items-center text-primary p-4 w-full">
 				<Link href="/" className="font-bold text-2xl">
 					GameVault
 				</Link>

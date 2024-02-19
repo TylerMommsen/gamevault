@@ -232,3 +232,30 @@ type GameScreenshots = {
 		'width': number;
 	}[];
 };
+
+type GameStores = {
+	'count': number;
+	'next': null | any;
+	'previous': null | any;
+	'results': {
+		'game_id': number;
+		'id': number;
+		'store_id': number;
+		'url': string;
+	}[];
+};
+
+type GameTrailers = {
+	'count': number;
+	'next': null | any;
+	'previous': null | any;
+	'results': Array<{
+		'data': {
+			'480': string;
+			'max': string;
+		};
+		'id': number;
+		'name': string;
+		'preview': string;
+	}>;
+};
