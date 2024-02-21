@@ -12,15 +12,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCatalog } from "../contexts/CatalogContext";
+import Loading from "@/app/search/[search]/loading";
 
 export default function Catalog({ urlSlug = "" }) {
   const [gameList, setGameList] = useState<GameList>(); // object parent of gameResults
   const [gameResults, setGameResults] = useState<GameResultsData[]>([]); // contains array of game results
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const { filters, setFilters } = useCatalog();
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const data = await ResourceLoader(getFetchUrl(urlSlug));
 
@@ -28,6 +31,8 @@ export default function Catalog({ urlSlug = "" }) {
         setGameResults(data.results);
       } catch (error) {
         console.error("Failed to fetch market data", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -90,7 +95,7 @@ export default function Catalog({ urlSlug = "" }) {
   return (
     <>
       <div className="mx-auto flex max-w-[1920px] flex-col gap-4 p-4">
-        <div className="mb-4 flex flex-col items-center justify-center lg:items-start lg:gap-4">
+        <div className="mb-4 flex w-full flex-col items-center justify-center lg:items-start lg:gap-4">
           <h1 className="text-4xl font-bold lg:text-6xl">
             {urlSlug === "" ? "Top Picks" : formatUrlSlug()}
           </h1>
@@ -125,27 +130,33 @@ export default function Catalog({ urlSlug = "" }) {
           </Select>
         </div>
 
-        <div className="grid place-items-center gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {gameResults?.map((game) => {
-            const gameSlug = encodeURIComponent(game.slug ?? "");
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            <div className="grid place-items-center gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+              {gameResults?.map((game) => {
+                const gameSlug = encodeURIComponent(game.slug ?? "");
 
-            const backgroundImage = game.background_image ?? "/";
-            const name = game.name ?? "Unknown Game";
-            const parentPlatforms = game.parent_platforms ?? [];
+                const backgroundImage = game.background_image ?? "/";
+                const name = game.name ?? "Unknown Game";
+                const parentPlatforms = game.parent_platforms ?? [];
 
-            return (
-              <Link href={`/games/${gameSlug}`} key={game.id} passHref>
-                <GameCard
-                  key={game.id}
-                  id={game.id}
-                  image={backgroundImage}
-                  name={name}
-                  parentPlatforms={parentPlatforms}
-                />
-              </Link>
-            );
-          })}
-        </div>
+                return (
+                  <Link href={`/games/${gameSlug}`} key={game.id} passHref>
+                    <GameCard
+                      key={game.id}
+                      id={game.id}
+                      image={backgroundImage}
+                      name={name}
+                      parentPlatforms={parentPlatforms}
+                    />
+                  </Link>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
     </>
   );
