@@ -23,10 +23,7 @@ export default function GameCard({
       <div className="relative w-full">
         <Image
           src={image}
-          sizes="100vw"
           style={{
-            width: "100%",
-            height: "auto",
             objectFit: "cover",
             aspectRatio: "16 / 9",
           }}
@@ -37,7 +34,7 @@ export default function GameCard({
         />
       </div>
 
-      <div className="flex flex-col gap-2 p-4">
+      <div className="flex w-auto flex-col gap-2 p-4">
         <div className="flex gap-4 text-textSecondary">
           <GamePlatforms parentPlatforms={parentPlatforms} />
         </div>
@@ -46,29 +43,30 @@ export default function GameCard({
 
         <div className="flex h-[32px] items-center gap-2 text-xl">
           <button className="relative h-full rounded-sm bg-secondaryLighter px-2">
-            &#43;
+            <Image
+              src={"/plus-icon.svg"}
+              width={20}
+              height={20}
+              alt="ellipsis icon"
+            />
           </button>
 
           <button className="relative h-full rounded-sm bg-secondaryLighter px-2">
-            <div className="relative h-full px-2">
-              <Image
-                src={"/gift-icon.svg"}
-                layout="fill"
-                objectFit="contain"
-                alt="ellipsis icon"
-              />
-            </div>
+            <Image
+              src={"/gift-icon.svg"}
+              width={20}
+              height={20}
+              alt="ellipsis icon"
+            />
           </button>
 
           <button className="relative h-full rounded-sm bg-secondaryLighter px-2">
-            <div className="relative h-full px-2">
-              <Image
-                src={"/horizontal-ellipsis-icon.svg"}
-                layout="fill"
-                objectFit="contain"
-                alt="ellipsis icon"
-              />
-            </div>
+            <Image
+              src={"/horizontal-ellipsis-icon.svg"}
+              width={20}
+              height={20}
+              alt="ellipsis icon"
+            />
           </button>
         </div>
       </div>

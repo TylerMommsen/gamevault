@@ -12,7 +12,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import GamePlatforms from "@/components/common/GamePlatforms";
-import NavSelections from "@/components/common/NavSelections";
+import NavSelections from "@/components/NavSelections";
 
 export default function GamePage({ params }: { params: { gamename: string } }) {
   const [gameData, setGameData] = useState<GameDetailedData>();
@@ -315,20 +315,19 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
             <div className="hidden aspect-video gap-4 lg:grid lg:grid-cols-2">
               {gameScreenshots.results.map((screenshot, index) => {
                 return (
-                  <div key={screenshot.id} className="">
-                    <Image
-                      src={screenshot.image}
-                      width={640}
-                      height={360}
-                      style={{
-                        objectFit: "cover",
-                        aspectRatio: "16/9",
-                        width: "100%",
-                        height: "auto",
-                      }}
-                      alt={`${gameData.name} game screenshot`}
-                    />
-                  </div>
+                  <Image
+                    key={screenshot.id}
+                    src={screenshot.image}
+                    width={640}
+                    height={360}
+                    style={{
+                      objectFit: "cover",
+                      aspectRatio: "16/9",
+                      width: "100%",
+                      height: "auto",
+                    }}
+                    alt={`${gameData.name} game screenshot`}
+                  />
                 );
               })}
             </div>
@@ -343,16 +342,15 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
                 if (storeId === 7) storeName = "Xbox Store";
                 if (storeId === 2) storeName = "Microsoft Store";
                 return (
-                  <>
-                    <a
-                      href={gameStore.url}
-                      target="_blank"
-                      rel="noreferrer nooponer"
-                      className="rounded-sm bg-secondary px-6 py-2 text-center"
-                    >
-                      {storeName}
-                    </a>
-                  </>
+                  <a
+                    key={gameStore.id}
+                    href={gameStore.url}
+                    target="_blank"
+                    rel="noreferrer nooponer"
+                    className="rounded-sm bg-secondary px-6 py-2 text-center"
+                  >
+                    {storeName}
+                  </a>
                 );
               })}
             </div>

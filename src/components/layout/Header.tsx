@@ -1,20 +1,19 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import ResourceLoader from "@/lib/ResourceLoader";
-
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import MobileMenu from "../common/NavSelections";
-
+import MobileMenu from "../NavSelections";
 import { Command, CommandInput } from "@/components/ui/command";
-
-import { GameDataContext } from "../../contexts/GameDataProvider";
+import { useRouter } from "next/navigation";
+import { useCatalog } from "@/contexts/CatalogContext";
 
 export default function Header() {
+  const router = useRouter();
+
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState<string>("");
 
-  const { fetchGameData } = useContext(GameDataContext);
+  const { filters, setFilters } = useCatalog();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,7 +31,8 @@ export default function Header() {
 
   const handleSearchEnter = (e: any) => {
     if (e.key === "Enter") {
-      fetchGameData(searchInput);
+      setFilters({ ...filters, setFilters: { searchInput } });
+      router.push(`/search/${searchInput}`);
     }
   };
 
