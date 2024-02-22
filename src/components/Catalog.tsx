@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCatalog } from "../contexts/CatalogContext";
-import Loading from "@/app/search/[search]/loading";
+import Loading from "@/app/loadingCatalog";
 
 export default function Catalog({ urlSlug = "" }) {
   const [gameList, setGameList] = useState<GameList>(); // object parent of gameResults
@@ -82,9 +82,13 @@ export default function Catalog({ urlSlug = "" }) {
   const formatUrlSlug = () => {
     let slug = urlSlug;
 
+    slug = decodeURIComponent(slug);
+
     if (slug === "role-playing-games-rpg") return "RPG";
 
-    const withSpaces = slug.replace(/-/g, " ");
+    const hyphenated = slug.replace(/\s+/g, "-");
+
+    const withSpaces = hyphenated.replace(/-/g, " ");
     const capitalized = withSpaces
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -94,7 +98,7 @@ export default function Catalog({ urlSlug = "" }) {
 
   return (
     <>
-      <div className="mx-auto flex max-w-[1920px] flex-col gap-4 p-4">
+      <div className="flex max-w-[1920px] flex-col gap-4 p-4">
         <div className="mb-4 flex w-full flex-col items-center justify-center lg:items-start lg:gap-4">
           <h1 className="text-4xl font-bold lg:text-6xl">
             {urlSlug === "" ? "Top Picks" : formatUrlSlug()}

@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import MobileMenu from "../NavSelections";
+import NavSelections from "../NavSelections";
 import { Command, CommandInput } from "@/components/ui/command";
 import { useRouter } from "next/navigation";
 import { useCatalog } from "@/contexts/CatalogContext";
@@ -38,7 +38,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed z-[100] flex w-screen justify-center ${isScrolled ? "bg-background" : null} transition-all duration-300`}
+      className={`fixed z-50 flex w-screen justify-center ${isScrolled ? "bg-background" : null} transition-all duration-300`}
     >
       <div className="flex w-full max-w-[1920px] items-center justify-between p-4 text-primary">
         <Link href="/" className="text-2xl font-bold">
@@ -55,13 +55,13 @@ export default function Header() {
           <CommandInput placeholder="Search..." />
         </Command>
 
-        <p>My Collection</p>
+        <p className="hidden lg:block">My Collection</p>
 
         <div className="lg:hidden">
           <Sheet>
             <SheetTrigger className="text-2xl">&#9776;</SheetTrigger>
-            <SheetContent className="overflow-y-scroll border-transparent">
-              <MobileMenu />
+            <SheetContent className="z-[101] overflow-y-scroll border-transparent">
+              <NavSelections />
             </SheetContent>
           </Sheet>
         </div>

@@ -47,7 +47,7 @@ export default function NavSelections() {
         Home
       </Link>
 
-      <div className="flex flex-col gap-2">
+      {/* <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">My Library</h2>
         <div className="flex flex-col gap-2 text-xl lg:text-base">
           {renderNavLink(
@@ -56,7 +56,7 @@ export default function NavSelections() {
             "My Collection",
           )}
         </div>
-      </div>
+      </div> */}
 
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">New Releases</h2>
@@ -103,7 +103,7 @@ export default function NavSelections() {
 
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">Genres</h2>
-        <div className="flex flex-col gap-2 text-xl lg:text-base">
+        <div className="flex flex-col gap-2 pb-16 text-xl lg:text-base">
           {renderNavLink(
             "/discover/action",
             "/NavIcons/action-icon.png",
