@@ -48,7 +48,6 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
         setGameScreenshots(screenshots);
         setGameStores(stores);
         setGameTrailers(trailers);
-        console.log(stores);
       } catch (error) {
         console.error("Failed to fetch game data", error);
       } finally {

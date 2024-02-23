@@ -4,6 +4,15 @@ import React, { useState } from "react";
 import Image from "next/image";
 import GamePlatforms from "@/components/common/GamePlatforms";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 interface GameCardProps {
   id: number;
   image: string;
@@ -20,15 +29,36 @@ export default function GameCard({
   const [imgSrc, setImgSrc] = useState<string>(image);
   const [imgFailed, setImgFailed] = useState<boolean>(false);
 
+  const [addToCollectionClicked, setAddToCollectionClicked] =
+    useState<boolean>(false);
+  const [addToWishlistClicked, setAddToWishlistClicked] =
+    useState<boolean>(false);
+
   const handleImgErr = () => {
     setImgSrc("/android-icon.svg"); // just placeholder to maintain sizing, opacity will be 0
     setImgFailed(true);
   };
 
+  const handleButtonClick = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    btn: string,
+  ) => {
+    e.preventDefault();
+    e.stopPropagation(); // Stop the event from propagating to parent elements
+
+    // Execute the action based on which button was clicked
+    if (btn === "addToCollection") {
+      setAddToCollectionClicked(!addToCollectionClicked);
+      console.log("worked");
+    } else if (btn === "addToWishlist") {
+      setAddToWishlistClicked(!addToWishlistClicked);
+    }
+  };
+
   return (
     <div
       id="game-card"
-      className="flex max-w-[440px] flex-col rounded-2xl bg-secondary text-primary lg:w-auto"
+      className="before-gradient-border relative z-[0] flex max-w-[440px] flex-col rounded-2xl bg-secondary text-primary lg:w-auto"
     >
       <div className="relative w-full">
         <Image
@@ -45,7 +75,7 @@ export default function GameCard({
         />
       </div>
 
-      <div className="flex w-auto flex-col gap-2 p-4">
+      <div className="z-[0] flex w-auto flex-col gap-2 rounded-b-2xl bg-secondary p-4">
         <div className="flex gap-4 text-textSecondary">
           <GamePlatforms parentPlatforms={parentPlatforms} />
         </div>
@@ -53,7 +83,10 @@ export default function GameCard({
         <h3 className="min-h-[64px] text-2xl font-bold">{name}</h3>
 
         <div className="flex h-[32px] items-center gap-2 text-xl">
-          <button className="relative h-full rounded-sm bg-secondaryLighter px-2 transition-all duration-300 hover:bg-primary hover:text-secondaryLighter">
+          <button
+            className={`relative h-full rounded-sm bg-secondaryLighter px-2 transition-all duration-300 hover:bg-primary hover:text-secondaryLighter ${addToCollectionClicked ? "bg-green-500 hover:bg-green-500 hover:text-textNormal" : null}`}
+            onClick={(e) => handleButtonClick(e, "addToCollection")}
+          >
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -79,7 +112,10 @@ export default function GameCard({
             </svg>
           </button>
 
-          <button className="relative h-full rounded-sm bg-secondaryLighter px-2 transition-all duration-300 hover:bg-primary hover:text-secondaryLighter">
+          <button
+            className={`relative h-full rounded-sm bg-secondaryLighter px-2 transition-all duration-300 hover:bg-primary hover:text-secondaryLighter ${addToWishlistClicked ? "bg-green-500 hover:bg-green-500 hover:text-textNormal" : null}`}
+            onClick={(e) => handleButtonClick(e, "addToWishlist")}
+          >
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -107,29 +143,86 @@ export default function GameCard({
             </svg>
           </button>
 
-          <button className="relative h-full rounded-sm bg-secondaryLighter px-2 transition-all duration-300 hover:bg-primary hover:text-secondaryLighter">
-            <svg
-              fill="currentColor"
-              viewBox="0 0 512 512"
-              xmlns="http://www.w3.org/2000/svg"
-              stroke="currentColor"
-              width={20}
-              height={20}
+          <DropdownMenu>
+            <DropdownMenuTrigger className="relative h-full rounded-sm bg-secondaryLighter px-2 transition-all duration-300 hover:bg-primary hover:text-secondaryLighter">
+              <svg
+                fill="currentColor"
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+                stroke="currentColor"
+                width={20}
+                height={20}
+              >
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <title>ionicons-v5-f</title>
+                  <circle cx="256" cy="256" r="48"></circle>
+                  <circle cx="416" cy="256" r="48"></circle>
+                  <circle cx="96" cy="256" r="48"></circle>
+                </g>
+              </svg>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="bg-primary text-textDark"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
             >
-              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                <title>ionicons-v5-f</title>
-                <circle cx="256" cy="256" r="48"></circle>
-                <circle cx="416" cy="256" r="48"></circle>
-                <circle cx="96" cy="256" r="48"></circle>
-              </g>
-            </svg>
-          </button>
+              <DropdownMenuLabel className="text-xl">
+                Quick Rating
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-base hover:bg-secondary hover:text-primary">
+                <div className="flex items-center justify-center gap-2">
+                  <Image
+                    src="/exceptional-icon.png"
+                    width={28}
+                    height={28}
+                    alt="exceptional rating icon"
+                  />
+                  <p>Exceptional</p>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-base hover:bg-secondary hover:text-primary">
+                <div className="flex items-center justify-center gap-2">
+                  <Image
+                    src="/recommended-icon.png"
+                    width={24}
+                    height={24}
+                    alt="recommended rating icon"
+                  />
+                  <p>Recommended</p>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-base hover:bg-secondary hover:text-primary">
+                <div className="flex items-center justify-center gap-2">
+                  <Image
+                    src="/meh-icon.webp"
+                    width={24}
+                    height={24}
+                    alt="meh rating icon"
+                  />
+                  <p>Meh</p>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-base hover:bg-secondary hover:text-primary">
+                <div className="flex items-center justify-center gap-2">
+                  <Image
+                    src="/skip-icon.png"
+                    width={24}
+                    height={24}
+                    alt="skip rating icon"
+                  />
+                  <p>Skip</p>
+                </div>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>
