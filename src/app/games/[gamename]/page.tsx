@@ -22,6 +22,11 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
   const [gameTrailers, setGameTrailers] = useState<GameTrailers>();
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [addToCollectionClicked, setAddToCollectionClicked] =
+    useState<boolean>(false);
+  const [addToWishlistClicked, setAddToWishlistClicked] =
+    useState<boolean>(false);
+
   const gameSlug = params.gamename;
 
   useEffect(() => {
@@ -72,7 +77,7 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
   return (
     <main
       id="game-detail-page"
-      className="relative min-h-screen bg-background pt-16 text-textNormal"
+      className="relative min-h-screen w-screen bg-background pt-24 text-textNormal"
     >
       {isLoading ? null : (
         <>
@@ -153,13 +158,23 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
                   </Carousel>
                 </div>
 
-                <button className="flex w-full items-center justify-between rounded-sm bg-primary px-6 py-2 text-start text-textDark">
-                  <div className="flex-col">
-                    <p className="text-sm text-textDark">Add to</p>
-                    <p className="text-xl font-bold">My Collection</p>
-                  </div>
-                  <p className="text-2xl font-bold">+</p>
-                </button>
+                <div className="flex w-full flex-col gap-2 lg:flex-row">
+                  <button className="flex w-full items-center justify-between rounded-sm bg-primary px-6 py-2 text-start text-textDark hover:opacity-90">
+                    <div className="flex-col">
+                      <p className="text-sm text-textDark">Add to</p>
+                      <p className="text-xl font-bold">My Collection</p>
+                    </div>
+                    <p className="text-2xl font-bold">+</p>
+                  </button>
+
+                  <button className="flex w-full items-center justify-between rounded-sm bg-primary px-6 py-2 text-start text-textDark hover:opacity-90">
+                    <div className="flex-col">
+                      <p className="text-sm text-textDark">Add to</p>
+                      <p className="text-xl font-bold">Wishlist</p>
+                    </div>
+                    <p className="text-2xl font-bold">+</p>
+                  </button>
+                </div>
 
                 <div className="mt-8 flex flex-col gap-8">
                   <div className="flex flex-col gap-1">

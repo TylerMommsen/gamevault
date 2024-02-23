@@ -13,11 +13,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { useUser } from "@/contexts/UserContext";
+
 interface GameCardProps {
   id: number;
   image: string;
   name: string;
   parentPlatforms: ParentPlatform[];
+  game: GameResultsData;
 }
 
 export default function GameCard({
@@ -25,14 +28,26 @@ export default function GameCard({
   image,
   name,
   parentPlatforms,
+  game,
 }: GameCardProps) {
   const [imgSrc, setImgSrc] = useState<string>(image);
   const [imgFailed, setImgFailed] = useState<boolean>(false);
 
-  const [addToCollectionClicked, setAddToCollectionClicked] =
-    useState<boolean>(false);
-  const [addToWishlistClicked, setAddToWishlistClicked] =
-    useState<boolean>(false);
+  const {
+    gameCollection,
+    gameWishlist,
+    addToCollection,
+    addToWishlist,
+    removeFromCollection,
+    removeFromWishlist,
+  } = useUser();
+
+  const isGameInCollection = gameCollection.some(
+    (g: GameResultsData) => g.id === game.id,
+  );
+  const isGameInWishlist = gameWishlist.some(
+    (g: GameResultsData) => g.id === game.id,
+  );
 
   const handleImgErr = () => {
     setImgSrc("/android-icon.svg"); // just placeholder to maintain sizing, opacity will be 0
@@ -44,14 +59,20 @@ export default function GameCard({
     btn: string,
   ) => {
     e.preventDefault();
-    e.stopPropagation(); // Stop the event from propagating to parent elements
+    e.stopPropagation();
 
-    // Execute the action based on which button was clicked
     if (btn === "addToCollection") {
-      setAddToCollectionClicked(!addToCollectionClicked);
-      console.log("worked");
+      if (isGameInCollection) {
+        removeFromCollection(id);
+      } else {
+        addToCollection(game);
+      }
     } else if (btn === "addToWishlist") {
-      setAddToWishlistClicked(!addToWishlistClicked);
+      if (isGameInWishlist) {
+        removeFromWishlist(id);
+      } else {
+        addToWishlist(game);
+      }
     }
   };
 
@@ -84,7 +105,7 @@ export default function GameCard({
 
         <div className="flex h-[32px] items-center gap-2 text-xl">
           <button
-            className={`relative h-full rounded-sm bg-secondaryLighter px-2 transition-all duration-300 hover:bg-primary hover:text-secondaryLighter ${addToCollectionClicked ? "bg-green-500 hover:bg-green-500 hover:text-textNormal" : null}`}
+            className={`${isGameInCollection ? "bg-green-500 text-primary" : "bg-secondaryLighter hover:bg-primary hover:text-secondaryLighter"} relative h-full rounded-sm px-2 transition-all duration-300 `}
             onClick={(e) => handleButtonClick(e, "addToCollection")}
           >
             <svg
@@ -113,7 +134,7 @@ export default function GameCard({
           </button>
 
           <button
-            className={`relative h-full rounded-sm bg-secondaryLighter px-2 transition-all duration-300 hover:bg-primary hover:text-secondaryLighter ${addToWishlistClicked ? "bg-green-500 hover:bg-green-500 hover:text-textNormal" : null}`}
+            className={`${isGameInWishlist ? "bg-green-500 text-primary" : "bg-secondaryLighter hover:bg-primary hover:text-secondaryLighter"} relative h-full rounded-sm px-2 transition-all duration-300`}
             onClick={(e) => handleButtonClick(e, "addToWishlist")}
           >
             <svg

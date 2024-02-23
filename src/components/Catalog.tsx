@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { useCatalog } from "../contexts/CatalogContext";
 import Loading from "@/app/loadingCatalog";
+import { useUser } from "@/contexts/UserContext";
 
 export default function Catalog({ urlSlug = "" }) {
   const [gameList, setGameList] = useState<GameList>(); // object parent of gameResults
@@ -20,6 +21,8 @@ export default function Catalog({ urlSlug = "" }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const { filters, setFilters } = useCatalog();
+
+  const { getCollection, getWishlist } = useUser();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,7 +39,16 @@ export default function Catalog({ urlSlug = "" }) {
       }
     };
 
-    fetchData();
+    if (urlSlug === "collection") {
+      setGameResults(JSON.parse(getCollection()));
+      setIsLoading(false);
+    } else if (urlSlug === "wishlist") {
+      setGameResults(JSON.parse(getWishlist()));
+      setIsLoading(false);
+    } else {
+      fetchData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlSlug]);
 
   const updateGames = (sort: string, plat: string) => {
@@ -98,7 +110,7 @@ export default function Catalog({ urlSlug = "" }) {
 
   return (
     <>
-      <div className="flex max-w-[1920px] flex-col gap-4 p-4">
+      <div className="flex max-w-[1920px] flex-col gap-4">
         <div className="mb-4 flex w-full flex-col items-center justify-center lg:items-start lg:gap-4">
           <h1 className="text-4xl font-bold lg:text-6xl">
             {urlSlug === "" ? "Top Picks" : formatUrlSlug()}
@@ -154,6 +166,7 @@ export default function Catalog({ urlSlug = "" }) {
                       image={backgroundImage}
                       name={name}
                       parentPlatforms={parentPlatforms}
+                      game={game}
                     />
                   </Link>
                 );

@@ -55,7 +55,14 @@ export default function Header() {
           <CommandInput placeholder="Search..." />
         </Command>
 
-        <p className="hidden lg:block">My Collection</p>
+        <div className="hidden gap-4 lg:flex">
+          <Link href={"/collection"}>
+            <p className="hidden hover:underline lg:block">Collection</p>
+          </Link>
+          <Link href={"/wishlist"}>
+            <p className="hidden hover:underline lg:block">Wishlist</p>
+          </Link>
+        </div>
 
         <div className="lg:hidden">
           <Sheet>

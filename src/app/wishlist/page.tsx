@@ -3,13 +3,7 @@
 import NavSelections from "@/components/NavSelections";
 import Catalog from "@/components/Catalog";
 
-export default function DiscoverGames({
-  params,
-}: {
-  params: { discover: string };
-}) {
-  const urlSlug = params.discover;
-
+export default function Wishlist() {
   return (
     <main className="min-h-screen w-screen bg-background pt-24 text-textNormal">
       <div className="mx-auto block max-w-[1920px] p-4 lg:flex lg:gap-12">
@@ -17,7 +11,7 @@ export default function DiscoverGames({
           <NavSelections />
         </div>
 
-        <Catalog urlSlug={urlSlug} />
+        <Catalog urlSlug="wishlist" />
       </div>
     </main>
   );

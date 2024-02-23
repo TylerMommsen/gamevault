@@ -42,7 +42,7 @@ export default function NavSelections() {
   };
 
   return (
-    <div className="flex h-full flex-col gap-8 bg-transparent pt-16 text-textNormal lg:pt-4">
+    <div className="flex h-full flex-col gap-8 bg-transparent pt-16 text-textNormal lg:pt-0">
       <Link href="/" className="text-3xl font-bold">
         Home
       </Link>
