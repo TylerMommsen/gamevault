@@ -25,3 +25,5 @@ export function CatalogProvider({ children }: CatalogContextProvider) {
 export function useCatalog() {
   return useContext(CatalogContext);
 }
+
+// use this to fix gamepage issue

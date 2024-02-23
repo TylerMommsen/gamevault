@@ -47,16 +47,17 @@ export default function NavSelections() {
         Home
       </Link>
 
-      {/* <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">My Library</h2>
         <div className="flex flex-col gap-2 text-xl lg:text-base">
           {renderNavLink(
             "/collection",
             "/NavIcons/my-collection-icon.svg",
-            "My Collection",
+            "Collection",
           )}
+          {renderNavLink("/wishlist", "/gift-icon.svg", "Wishlist")}
         </div>
-      </div> */}
+      </div>
 
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">New Releases</h2>

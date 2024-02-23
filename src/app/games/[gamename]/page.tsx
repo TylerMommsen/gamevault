@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import ResourceLoader from "@/lib/ResourceLoader";
+import getFetchUrl from "@/lib/getFetchUrl";
+
 import Image from "next/image";
 
 import {
@@ -15,6 +17,8 @@ import GamePlatforms from "@/components/common/GamePlatforms";
 import NavSelections from "@/components/NavSelections";
 import LoadingGamePage from "@/app/loadingGamePage";
 
+import { useUser } from "@/contexts/UserContext";
+
 export default function GamePage({ params }: { params: { gamename: string } }) {
   const [gameData, setGameData] = useState<GameDetailedData>();
   const [gameScreenshots, setGameScreenshots] = useState<GameScreenshots>();
@@ -22,12 +26,39 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
   const [gameTrailers, setGameTrailers] = useState<GameTrailers>();
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [addToCollectionClicked, setAddToCollectionClicked] =
-    useState<boolean>(false);
-  const [addToWishlistClicked, setAddToWishlistClicked] =
-    useState<boolean>(false);
 
   const gameSlug = params.gamename;
+
+  const {
+    gameCollection,
+    gameWishlist,
+    addToCollection,
+    addToWishlist,
+    removeFromCollection,
+    removeFromWishlist,
+  } = useUser();
+
+  const handleButtonClick = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    btn: string,
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (btn === "addToCollection") {
+      if (isGameInCollection) {
+        removeFromCollection(gameData?.id);
+      } else {
+        addToCollection(gameData);
+      }
+    } else if (btn === "addToWishlist") {
+      if (isGameInWishlist) {
+        removeFromWishlist(gameData?.id);
+      } else {
+        addToWishlist(gameData);
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,26 +105,32 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
     setShowFullDescription(!showFullDescription);
   };
 
+  const isGameInCollection = gameCollection.some(
+    (g: GameResultsData) => g.id === gameData?.id,
+  );
+  const isGameInWishlist = gameWishlist.some(
+    (g: GameResultsData) => g.id === gameData?.id,
+  );
+
   return (
     <main
       id="game-detail-page"
-      className="relative min-h-screen w-screen bg-background pt-24 text-textNormal"
+      className={`${isLoading ? "bg-background" : null} relative min-h-screen w-screen pt-24 text-textNormal`}
     >
       {isLoading ? null : (
-        <>
-          <div className="absolute left-0 top-0 z-[-2] h-full w-full bg-background">
-            <div
-              style={{
-                height: "500px",
-                width: "100%",
-                background: "no-repeat-top",
-                backgroundSize: "cover",
-                backgroundImage: `linear-gradient(rgba(15, 15, 15, 0), rgb(15, 15, 15)), linear-gradient(rgba(15, 15, 15, 0.8), rgba(15, 15, 15, 0.5)), url(${gameData?.background_image})`,
-                zIndex: "1",
-              }}
-            ></div>
-          </div>
-        </>
+        <div className="absolute left-0 top-0 z-[-2] h-full w-full bg-background">
+          <div
+            style={{
+              height: "500px",
+              width: "100%",
+              background: "no-repeat-top",
+              backgroundColor: "transparent",
+              backgroundSize: "cover",
+              backgroundPosition: "center top",
+              backgroundImage: `linear-gradient(rgba(15, 15, 15, 0), rgb(15, 15, 15)), linear-gradient(rgba(15, 15, 15, 0.8), rgba(15, 15, 15, 0.5)), url(${gameData?.background_image})`,
+            }}
+          ></div>
+        </div>
       )}
 
       <div className="mx-auto block max-w-[1920px] xl:flex xl:gap-8 xl:p-4">
@@ -101,12 +138,12 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
           <NavSelections />
         </div>
 
-        <div className="z-[1] mx-auto max-w-[1200px] lg:grid lg:grid-cols-2">
+        <div className="z-[1] mx-auto max-w-[1200px] gap-4 p-4 lg:grid lg:grid-cols-2">
           {isLoading ? (
             <LoadingGamePage />
           ) : (
             <>
-              <div className="z-[100] mx-auto flex max-w-[500px] flex-col items-center gap-4 p-4 text-center lg:w-auto lg:flex-auto lg:items-start lg:text-start">
+              <div className="z-[100] mx-auto flex max-w-[500px] flex-col items-center gap-4 text-center lg:w-auto lg:flex-auto lg:items-start lg:p-0 lg:text-start">
                 <p className="text-textSecondary">{`HOME / GAMES / ${gameData?.name}`}</p>
 
                 <div className="flex w-full items-center justify-center lg:items-start lg:justify-normal lg:text-start">
@@ -126,6 +163,20 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
                 <h1 className="text-3xl font-bold lg:text-start lg:text-6xl">
                   {gameData?.name}
                 </h1>
+
+                <div className="w-full lg:hidden">
+                  {gameTrailers?.results && gameTrailers.results.length > 0 ? (
+                    <div className={`relative aspect-video w-full`}>
+                      <iframe
+                        src={gameTrailers?.results[0].data.max}
+                        allowFullScreen
+                        loading="lazy"
+                        title={gameData?.name + " trailer"}
+                        className="h-full w-full"
+                      />
+                    </div>
+                  ) : null}
+                </div>
 
                 <div className="max-w-screen lg:hidden">
                   <Carousel>
@@ -159,20 +210,34 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
                 </div>
 
                 <div className="flex w-full flex-col gap-2 lg:flex-row">
-                  <button className="flex w-full items-center justify-between rounded-sm bg-primary px-6 py-2 text-start text-textDark hover:opacity-90">
+                  <button
+                    className={`${isGameInCollection ? "bg-green-500 text-primary" : "bg-primary text-textDark"} flex w-full items-center justify-between rounded-sm px-6 py-2 text-start transition-all duration-300 hover:opacity-90`}
+                    onClick={(e) => handleButtonClick(e, "addToCollection")}
+                  >
                     <div className="flex-col">
-                      <p className="text-sm text-textDark">Add to</p>
+                      <p className="text-sm">
+                        {isGameInCollection ? "Remove from" : "Add to"}
+                      </p>
                       <p className="text-xl font-bold">My Collection</p>
                     </div>
-                    <p className="text-2xl font-bold">+</p>
+                    <p className="text-2xl font-bold">
+                      {isGameInCollection ? <>&#10003;</> : "+"}
+                    </p>
                   </button>
 
-                  <button className="flex w-full items-center justify-between rounded-sm bg-primary px-6 py-2 text-start text-textDark hover:opacity-90">
+                  <button
+                    className={`${isGameInWishlist ? "border-green-500 hover:border-green-600" : "border-primary hover:border-textSecondary"} flex w-full items-center justify-between rounded-sm border-2 bg-transparent px-6 py-2 text-start text-primary transition-all duration-300 `}
+                    onClick={(e) => handleButtonClick(e, "addToWishlist")}
+                  >
                     <div className="flex-col">
-                      <p className="text-sm text-textDark">Add to</p>
+                      <p className="text-sm">
+                        {isGameInWishlist ? "Remove from" : "Add to"}
+                      </p>
                       <p className="text-xl font-bold">Wishlist</p>
                     </div>
-                    <p className="text-2xl font-bold">+</p>
+                    <p className="text-2xl font-bold">
+                      {isGameInWishlist ? <>&#10003;</> : "+"}
+                    </p>
                   </button>
                 </div>
 
@@ -506,7 +571,7 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-4">
+              <div className="hidden flex-col gap-4 lg:flex">
                 {gameTrailers?.results && gameTrailers.results.length > 0 ? (
                   <div className={`relative aspect-video w-full`}>
                     <iframe
@@ -519,7 +584,7 @@ export default function GamePage({ params }: { params: { gamename: string } }) {
                   </div>
                 ) : null}
 
-                <div className="hidden aspect-video gap-4 lg:grid lg:grid-cols-2">
+                <div className="hidden aspect-video gap-2 lg:grid lg:grid-cols-2">
                   {gameScreenshots?.results.map((screenshot, index) => {
                     return (
                       <Image

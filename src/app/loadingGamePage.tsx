@@ -98,7 +98,7 @@ export default function LoadingGamePage() {
           </div>
         </Skeleton>
 
-        <div className="hidden aspect-video gap-4 lg:grid lg:grid-cols-2">
+        <div className="hidden aspect-video gap-2 lg:grid lg:grid-cols-2">
           <Skeleton className="flex max-w-[440px] flex-col bg-secondary lg:w-auto">
             <div className="relative w-full">
               <Image

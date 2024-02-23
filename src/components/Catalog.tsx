@@ -33,7 +33,7 @@ export default function Catalog({ urlSlug = "" }) {
         setGameList(data);
         setGameResults(data.results);
       } catch (error) {
-        console.error("Failed to fetch market data", error);
+        console.error("Failed to fetch game data", error);
       } finally {
         setIsLoading(false);
       }
@@ -117,7 +117,7 @@ export default function Catalog({ urlSlug = "" }) {
           </h1>
         </div>
 
-        <div className="grid w-full grid-cols-2 gap-2 lg:max-w-[360px]">
+        <div className="grid w-full max-w-[440px] grid-cols-2 gap-2 self-center md:self-start">
           <Select onValueChange={handleSortChange}>
             <SelectTrigger className="border-none bg-secondary">
               <SelectValue placeholder="Sort by" />
