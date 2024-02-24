@@ -5,26 +5,16 @@ GameVault is a Game Catalog site which is the ultimate destination for exploring
 [Live](https://tylermommsen-gamevault.vercel.app/)
 
 ## Built With
-<table align="start">
-  <tr>
-    <td align="center" height="70" width="70">
-      <img src="https://skillicons.dev/icons?i=nextjs" alt="Next.js icon">
-      <br/>Next.js
-    </td>
-    <td align="center" height="70" width="70">
-      <img src="https://skillicons.dev/icons?i=react" alt="React icon">
-      <br/>React
-    </td>
-    <td align="center" height="70" width="70">
-      <img src="https://skillicons.dev/icons?i=ts" alt="TypeScript icon">
-      <br/>TypeScript
-    </td>
-    <td align="center" height="70" width="70">
-      <img src="https://skillicons.dev/icons?i=tailwind" alt="Tailwind icon">
-      <br/>TailWind
-    </td>
-  </tr>
-</table>
+<div>
+  <img src="https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js icon">
+  </br>
+  <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="react icon">
+  </br>
+  <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" alt="typescript icon">
+  </br>
+  <img src="https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="tailwind icon">
+  </br>
+</div>
 
 ## Features
 - Vast catalog of over 800,000 games.
