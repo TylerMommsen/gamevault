@@ -10,6 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "GameVault",
   description: "GameVault catalogue",
+  icons: "/favicon.jpg",
 };
 
 export default function RootLayout({

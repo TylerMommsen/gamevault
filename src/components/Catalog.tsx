@@ -14,7 +14,6 @@ import {
 import { useCatalog } from "../contexts/CatalogContext";
 import Loading from "@/app/loadingCatalog";
 import { useUser } from "@/contexts/UserContext";
-import { url } from "inspector";
 
 export default function Catalog({ urlSlug = "" }) {
   const [gameList, setGameList] = useState<GameList>(); // object parent of gameResults
