@@ -14,6 +14,7 @@ import {
 import { useCatalog } from "../contexts/CatalogContext";
 import Loading from "@/app/loadingCatalog";
 import { useUser } from "@/contexts/UserContext";
+import { url } from "inspector";
 
 export default function Catalog({ urlSlug = "" }) {
   const [gameList, setGameList] = useState<GameList>(); // object parent of gameResults
@@ -52,30 +53,43 @@ export default function Catalog({ urlSlug = "" }) {
   }, [urlSlug]);
 
   const updateGames = (sort: string, plat: string) => {
-    let updatedGames = gameList?.results || [];
+    let updatedGames;
+    if (urlSlug === "collection") {
+      updatedGames = JSON.parse(getCollection());
+    } else if (urlSlug === "wishlist") {
+      updatedGames = JSON.parse(getWishlist());
+    } else {
+      updatedGames = gameList?.results || [];
+    }
 
     if (filters.searchQuery !== "") {
       updatedGames = filters.searchQuery.results;
     }
 
     if (plat) {
-      updatedGames = updatedGames.filter((game) =>
+      updatedGames = updatedGames.filter((game: GameResultsData) =>
         game.parent_platforms.some((p) => p.platform.name === plat),
       );
     }
 
     if (sort === "release date") {
-      updatedGames.sort((a, b) => {
+      updatedGames.sort((a: GameResultsData, b: GameResultsData) => {
         const dataA = new Date(a.released).getTime();
         const dateB = new Date(b.released).getTime();
         return dateB - dataA;
       });
     } else if (sort === "name") {
-      updatedGames.sort((a, b) => a.name.localeCompare(b.name));
+      updatedGames.sort((a: GameResultsData, b: GameResultsData) =>
+        a.name.localeCompare(b.name),
+      );
     } else if (sort === "popularity") {
-      updatedGames.sort((a, b) => b.added - a.added);
+      updatedGames.sort(
+        (a: GameResultsData, b: GameResultsData) => b.added - a.added,
+      );
     } else if (sort === "average rating") {
-      updatedGames.sort((a, b) => b.rating - a.rating);
+      updatedGames.sort(
+        (a: GameResultsData, b: GameResultsData) => b.rating - a.rating,
+      );
     }
 
     setGameResults(updatedGames);
