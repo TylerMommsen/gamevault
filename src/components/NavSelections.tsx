@@ -11,7 +11,10 @@ export default function NavSelections() {
     classNames: string = "",
   ) => {
     return (
-      <Link href={href} className="flex items-center gap-2 hover:underline">
+      <Link
+        href={href}
+        className="hover-parent flex items-center gap-2 hover:underline"
+      >
         <div
           className={`relative flex h-[28px] w-[28px] items-center justify-center rounded-md bg-secondary ${classNames}`}
         >
@@ -22,7 +25,7 @@ export default function NavSelections() {
               width={20}
               height={20}
               alt={label + "icon"}
-              className="h-auto w-auto rounded-md"
+              className="h-auto w-auto rounded-md opacity-100"
               style={{ objectFit: "cover" }}
             />
           ) : (
@@ -36,7 +39,7 @@ export default function NavSelections() {
             </>
           )}
         </div>
-        <p>{label}</p>
+        <p className="hover-parent:hover:p-opacity-100 opacity-50">{label}</p>
       </Link>
     );
   };

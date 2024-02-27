@@ -21,20 +21,7 @@
 
     --secondaryLighter: rgb(53, 53, 53);
 
-    --muted: rgb(210 40% 96.1%);
-    --muted-foreground: rgb(215.4 16.3% 46.9%);
-
     --accent: rgb(242, 242, 242);
-    --accent-foreground: rgb(222.2 47.4% 11.2%);
-
-    --destructive: rgb(0 84.2% 60.2%);
-    --destructive-foreground: rgb(210 40% 98%);
-
-    --border: rgb(255, 0, 0);
-    --input: rgb(214.3 31.8% 91.4%);
-    --ring: rgb(255, 0, 0);
-
-    --radius: 0.5rem;
 
     --text-normal: rgb(242, 242, 242);
     --text-secondary: rgba(255, 255, 255, 0.45);
@@ -95,4 +82,9 @@
 
 *::-webkit-scrollbar-button {
   display: none; /* Hides scrollbar buttons */
+}
+
+/* Used for hover styling on nav links */
+.hover-parent:hover p {
+  opacity: 1;
 }
