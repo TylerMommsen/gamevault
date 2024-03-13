@@ -1,8 +1,8 @@
 # GameVault
 GameVault is a Game Catalog site which is the ultimate destination for exploring a vast collection of over 500,000 games. All data is fetched using RAWG API to provide comprehensive information, including descriptions, ratings, metacritic scores, publishers, developers and much more! Built using Next.js/React, TypeScript and Tailwind.
 
-## Demo
-[Live](https://tylermommsen-gamevault.vercel.app/)
+## Live Demo
+[View Live Site Here](https://tylermommsen-gamevault.vercel.app/)
 
 ## Built With
 <div>
